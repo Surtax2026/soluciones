@@ -36,7 +36,7 @@
     var el = e.target.closest("[data-tab],[data-act],nav button,nav a,.tabs button,button,a"); if(!el) return;
     if(el.closest("#demo-gate")) return;
     var tab = el.getAttribute("data-tab"), a = el.getAttribute("data-act");
-    if(tab) track("ver:" + tab); else if(a) track("accion:" + a); else track("clic:" + (el.textContent || el.getAttribute("aria-label") || "").slice(0, 30));
+    if(tab) track("ver:" + tab); else if(a) track("accion:" + a);
   }, true);
   ["pointerdown", "keydown", "scroll", "touchstart"].forEach(function(ev){ window.addEventListener(ev, function(){ var n = Date.now(); if(n - ultimo < 60e3) activo += n - ultimo; ultimo = n; }, { passive: true, capture: true }); });
   function flush(keep){
@@ -73,7 +73,7 @@
     var d = document.createElement("div"); d.id = "demo-gate";
     d.innerHTML = '<form class="g" novalidate><span class="ey">Demo · ' + (esArr ? "SurArriendos" : "SurCaja") + '</span>' +
       '<h2>' + (esArr ? "Prueba cómo administramos un arriendo" : "Prueba SurCaja con un salón de ejemplo") + '</h2>' +
-      '<p style="margin:0;color:#5b6472">Antes de entrar, cuéntanos quién eres. Usas datos de ejemplo: nada de lo que hagas queda guardado.</p>' +
+      '<p style="margin:0;color:#5b6472">Antes de entrar, cuéntanos quién eres. Usas datos de ejemplo: lo que hagas queda solo en este navegador y no toca ningún negocio real.</p>' +
       '<label for="lg-nom">Tu nombre<input id="lg-nom" autocomplete="name" maxlength="60"></label>' +
       '<div class="two"><label for="lg-neg">' + (esArr ? "¿Cuántas propiedades arriendas?" : "Nombre de tu negocio") + (esArr
         ? '<select id="lg-neg"><option value="">Elige</option><option>1</option><option>2 a 3</option><option>4 a 10</option><option>Más de 10</option><option>Soy corredor o administrador</option></select>'

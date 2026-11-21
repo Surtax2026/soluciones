@@ -175,7 +175,7 @@ function comision(p,base){const t=comTipo(p),pct=(Number(p.comision_pct)||5)/100
   if(t==="sin"||!base)return{neto:0,iva:0,total:0};
   if(t==="incluido"){const total=Math.round(base*pct);const neto=Math.round(total/(1+IVA));return{neto,iva:total-neto,total}}
   const neto=Math.round(base*pct);const iva=Math.round(neto*IVA);return{neto,iva,total:neto+iva}}
-const comTxt=p=>({sin:"Sin comisión",incluido:(p.comision_pct||5)+"% IVA incluido",mas_iva:(p.comision_pct||5)+"% + IVA"})[comTipo(p)]+(p.comision_confirmar?" · por confirmar":"");
+const comTxt=p=>(comTipo(p)==="sin"?"Sin comisión":"Pactada con el propietario")+(p.comision_confirmar?" · por confirmar":"");
 const activa=p=>p.administra!==false&&p.estado!=="Terminado";
 const id2=(p,m)=>p.id+"_"+m;
 function cobro(p,m){
@@ -319,7 +319,7 @@ function vFac(){
   ${rows.map(({p,f})=>`<tr><td><b>${esc(corto(p))}</b><small>${esc(p.id)}</small></td><td>${esc(p.facturar_a||p.propietario||"—")}${p.rut_factura?`<small>${esc(p.rut_factura)}</small>`:""}</td><td>${esc(comTxt(p))}</td><td class="n">${clp(f.base)}</td><td class="n">${clp(f.com.neto)}</td><td class="n">${clp(f.com.iva)}</td><td class="n"><b>${clp(f.com.total)}</b></td><td><span class="pill ${lbl[f.estado][1]}">${lbl[f.estado][0]}</span>${f.f&&f.f.folio?`<small>Folio ${esc(f.f.folio)} · ${fTxt(f.f.fecha)}</small>`:""}</td><td>${f.estado!=="espera"?`<button class="mini ${f.estado==="pendiente"?"p":""}" data-act="fact" data-id="${esc(p.id)}" data-m="${m}">${f.estado==="emitida"?"Editar":"Anotar folio"}</button>`:""}</td></tr>`).join("")||`<tr><td colspan="9" class="muted">No hay comisiones en este mes.</td></tr>`}
   <tr class="tot"><td colspan="6">Total</td><td class="n">${clp(T.tot)}</td><td colspan="2"></td></tr>
   </tbody></table></div>
-  <p class="muted" style="font-size:13px">"Por confirmar" indica que falta confirmar con el propietario si la comisión es 5% más IVA o 5% con IVA incluido.</p>`;
+  <p class="muted" style="font-size:13px">"Por confirmar" indica que falta confirmar con el propietario las condiciones de la comisión. Los montos de esta demo son de ejemplo.</p>`;
 }
 
 function vRen(){
