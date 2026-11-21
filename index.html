@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="SurCaja: agenda, caja y cobro para negocios de servicios. SurArriendos: administración de arriendos. Soluciones de Surtax, Puerto Varas.">
+<meta property="og:title" content="Surtax Soluciones · SurCaja y SurArriendos">
+<meta property="og:description" content="Prueba las demos de SurCaja y SurArriendos, hechas en Puerto Varas por Surtax.">
+<meta property="og:image" content="osorno.jpg">
+<link rel="icon" href="surtax-trim.png">
+<title>Surtax Soluciones</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=PT+Sans:wght@400;700&display=swap">
+<style>
+/* Layout: banda de marca arriba, foto del sur en el hero, dos productos lado a lado, secciones con regla dorada, contacto en banda navy */
+:root{
+  --navy:#06213C; --navy2:#13305F; --gold:#A98A54; --gold-on-navy:#C19257; --gold-text:#956A32;
+  --bg:#FFFFFF; --bg2:#F5F3EE; --fg:#1B2430; --muted:#5A6472; --line:#DCD6CA; --card:#FFFFFF;
+  --ok:#2E6B4F;
+  --f-display:"Playfair Display", Georgia, "Times New Roman", serif;
+  --f-body:"PT Sans", "Segoe UI", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1624; --bg2:#101F33; --fg:#E7EAF0; --muted:#A6B0BE; --line:#26364D; --card:#0F1C2E; --gold-text:#D2AE72; --ok:#7CC3A0; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1624; --bg2:#101F33; --fg:#E7EAF0; --muted:#A6B0BE; --line:#26364D; --card:#0F1C2E; --gold-text:#D2AE72; --ok:#7CC3A0; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;font-variant-numeric:tabular-nums}
+a{color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+.eyebrow{font-size:11px;letter-spacing:3.3px;text-transform:uppercase;color:var(--gold-text);font-weight:700}
+.btn{display:inline-block;text-decoration:none;padding:13px 22px;font-weight:700;border:1px solid var(--gold);border-radius:0;transition:transform .15s,box-shadow .15s}
+.btn.solid{background:var(--gold);color:#06213C}
+.btn.line{color:inherit}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(6,33,60,.18)}
+.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+/* barra */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--navy)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--navy);color:#fff}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{height:34px;width:auto;background:#fff;padding:3px}
+.brand span{font-family:var(--f-display);font-size:20px;letter-spacing:.5px}
+.nav{display:flex;gap:22px;font-size:15px}
+.nav a{text-decoration:none;opacity:.88}
+.nav a:hover{opacity:1;color:var(--gold-on-navy)}
+@media (max-width:720px){.nav{display:none}}
+
+/* hero */
+.hero{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+.hero .ph{position:absolute;inset:0 0 0 38%;background:url("osorno.jpg") center/cover}
+.hero .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--navy) 0%,rgba(6,33,60,.55) 40%,rgba(6,33,60,.1) 100%)}
+.hero .wrap{position:relative;padding-block:72px 64px}
+.hero h1{font-size:clamp(32px,5vw,52px);max-width:640px;margin-top:14px}
+.hero h1 em{font-style:normal;color:var(--gold-on-navy)}
+.hero p.lead{max-width:540px;margin-top:18px;font-size:19px;opacity:.92}
+.hero .eyebrow{color:var(--gold-on-navy)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.hero .btn.line{color:#fff}
+.credit{position:absolute;right:max(16px,env(safe-area-inset-right,0px));bottom:8px;font-size:11px;opacity:.75;z-index:2}
+@media (max-width:720px){.hero .ph{inset:0;opacity:.35}}
+
+/* productos */
+section{padding-block:72px}
+.sec-head{display:grid;gap:10px;max-width:720px;margin-bottom:36px}
+.sec-head h2{font-size:clamp(26px,3.6vw,38px)}
+.sec-head p{color:var(--muted)}
+.rule{width:56px;height:2px;background:var(--gold)}
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+@media (max-width:820px){.duo{grid-template-columns:1fr}}
+.prod{border:1px solid var(--line);background:var(--card);padding:28px;display:grid;gap:14px;align-content:start;transition:box-shadow .2s}
+.prod:hover{box-shadow:0 10px 28px rgba(6,33,60,.12)}
+.prod .tag{font-size:13px;color:var(--muted)}
+.prod h3{font-size:30px}
+.prod h3 b{color:var(--gold-text);font-weight:600}
+.prod ul{margin:0;padding-left:18px;display:grid;gap:6px}
+.prod .go{margin-top:6px;font-weight:700;color:var(--gold-text);text-decoration:none}
+
+/* detalle */
+.alt{background:var(--bg2)}
+.split{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:start}
+@media (max-width:860px){.split{grid-template-columns:1fr}}
+.feats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (max-width:560px){.feats{grid-template-columns:1fr}}
+.feat{border-top:2px solid var(--gold);padding-top:12px;display:grid;gap:4px;min-width:0}
+.feat h4{margin:0;font-size:17px}
+.feat p{color:var(--muted);font-size:15.5px}
+.aside{background:var(--navy);color:#fff;padding:28px;display:grid;gap:14px}
+.aside .eyebrow{color:var(--gold-on-navy)}
+.aside h3{font-size:24px}
+.aside p{opacity:.9;font-size:15.5px}
+.aside img.nua{background:#fff;padding:10px 14px;max-width:220px}
+.aside a.live{color:var(--gold-on-navy);font-weight:700}
+.diff{margin-top:28px;border-left:3px solid var(--gold);padding:6px 0 6px 18px;font-family:var(--f-display);font-size:21px;line-height:1.35}
+
+/* pasos */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;counter-reset:s}
+@media (max-width:820px){.steps{grid-template-columns:1fr}}
+.step{display:grid;gap:8px;min-width:0}
+.step .n{font-family:var(--f-display);font-size:40px;color:var(--gold-text);line-height:1}
+.step p{color:var(--muted)}
+
+/* sur */
+.south{position:relative;min-height:340px;background:url("petrohue.jpg") center/cover;color:#fff;display:flex;align-items:flex-end}
+.south::before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(6,33,60,.88) 0%,rgba(6,33,60,.25) 70%)}
+.south .wrap{position:relative;padding-block:48px;width:100%}
+.south h2{font-size:clamp(24px,3.4vw,34px);max-width:680px}
+.south p{max-width:600px;margin-top:10px;opacity:.92}
+
+/* contacto */
+.contact{background:var(--navy);color:#fff}
+.contact .eyebrow{color:var(--gold-on-navy)}
+.cgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:36px;align-items:start}
+@media (max-width:820px){.cgrid{grid-template-columns:1fr}}
+.cbox{border:1px solid rgba(193,146,87,.45);padding:24px;display:grid;gap:16px}
+.crow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.crow .v{font-size:20px;font-weight:700;user-select:all}
+.crow .l{font-size:13px;opacity:.75;display:block}
+.copy{background:transparent;color:var(--gold-on-navy);border:1px solid var(--gold-on-navy);padding:8px 14px;font:inherit;font-size:14px;cursor:pointer;border-radius:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid rgba(255,255,255,.35);padding:7px 12px;cursor:pointer;background:transparent;color:#fff;font:inherit;font-size:14px;border-radius:0}
+.chip[aria-pressed="true"]{background:var(--gold);color:#06213C;border-color:var(--gold)}
+.msg{background:rgba(255,255,255,.06);padding:14px;font-size:15px;min-height:64px}
+footer{background:var(--bg);border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;padding-block:28px;font-size:13px;color:var(--muted)}
+footer img{width:120px;background:#fff;padding:6px}
+/* que hacemos */
+.flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--line);background:var(--card)}
+@media (max-width:820px){.flow{grid-template-columns:1fr}}
+.flow .st{padding:26px;display:grid;gap:8px;position:relative;min-width:0}
+.flow .st+.st{border-left:1px solid var(--line)}
+@media (max-width:820px){.flow .st+.st{border-left:0;border-top:1px solid var(--line)}}
+.flow .st .k{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold-text);font-weight:700}
+.flow .st h3{font-size:24px}
+.flow .st p{color:var(--muted);font-size:15.5px}
+.flow .st .ex{font-size:14px;color:var(--fg);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
+.flow .st:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:30px;width:24px;height:24px;background:var(--gold);color:#06213C;display:grid;place-items:center;font-weight:700;z-index:1}
+@media (max-width:820px){.flow .st:not(:last-child)::after{content:"↓";right:auto;left:26px;top:auto;bottom:-12px}}
+/* ventajas */
+.vs{overflow-x:auto;border:1px solid var(--line);background:var(--card)}
+.vs table{border-collapse:collapse;width:100%;min-width:620px}
+.vs th,.vs td{padding:14px 18px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;font-size:15.5px}
+.vs th{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.vs th.us{color:var(--gold-text)}
+.vs td:first-child{font-weight:700;width:22%}
+.vs td.no{color:var(--muted)}
+.vs td.us{background:color-mix(in srgb,var(--gold) 9%,transparent)}
+.vs tr:last-child td{border-bottom:0}
+/* ofertas */
+.offers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:900px){.offers{grid-template-columns:1fr}}
+.off{border:1px solid var(--line);border-top:4px solid var(--gold);background:var(--card);padding:24px;display:grid;gap:12px;align-content:start;transition:box-shadow .2s}
+.off:hover{box-shadow:0 10px 28px rgba(6,33,60,.12)}
+.off .pr{font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700;color:var(--gold-text)}
+.off h3{font-size:23px}
+.off .big{font-family:var(--f-display);font-size:30px;color:var(--fg)}
+.off .big small{font-family:var(--f-body);font-size:14px;color:var(--muted);display:block}
+.off ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:15.5px}
+.off .cond{font-size:13px;color:var(--muted)}
+/* faq */
+.faq{display:grid;gap:0;border-top:1px solid var(--line)}
+.faq details{border-bottom:1px solid var(--line);padding:16px 4px}
+.faq summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::after{content:"+";color:var(--gold-text);font-size:22px;line-height:1}
+.faq details[open] summary::after{content:"−"}
+.faq details p{margin-top:8px;color:var(--muted);max-width:760px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio"><img src="surtax-trim.png" alt="Surtax"><span>Surtax</span></a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#que-hacemos">Qué hacemos</a><a href="#surcaja">SurCaja</a><a href="#surarriendos">SurArriendos</a><a href="#ofertas">Ofertas</a><a href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="inicio" style="padding-block:0">
+  <div class="ph" role="img" aria-label="Volcán Osorno sobre el lago Llanquihue"></div>
+  <div class="wrap">
+    <span class="eyebrow">Surtax · Puerto Varas</span>
+    <h1>Tu negocio y tus arriendos en orden, <em>con tu contador al lado</em>.</h1>
+    <p class="lead">Dos soluciones de Surtax para quienes quieren dejar el cuaderno y el WhatsApp: SurCaja para negocios de servicios y SurArriendos para propietarios.</p>
+    <div class="ctas">
+      <a class="btn solid" href="#contacto" data-pick="surcaja">Quiero SurCaja</a>
+      <a class="btn line" href="#contacto" data-pick="surarriendos">Quiero SurArriendos</a>
+    </div>
+  </div>
+  <span class="credit">Volcán Osorno · Foto: Sarah and Iain, CC BY 2.0, Wikimedia Commons</span>
+</section>
+
+<div style="background:var(--bg2);border-bottom:1px solid var(--line)">
+  <div class="wrap" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding-block:16px;font-size:15px">
+    <span class="eyebrow">Ya funcionan</span>
+    <span><b>SurCaja</b> en NÚASPA, Las Condes</span>
+    <span><b>SurArriendos</b> en Sus Raíces Propiedades</span>
+  </div>
+</div>
+
+<section id="que-hacemos">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Qué hacemos</span><div class="rule"></div><h2>Llevamos el día a día, lo cuadramos y dejamos tus impuestos resueltos.</h2><p>Un solo equipo hace las tres cosas con los mismos datos. Por eso no hay que juntar papeles ni explicar dos veces lo mismo.</p></div>
+    <div class="flow">
+      <div class="st"><span class="k">1 · Operamos</span><h3>El día a día</h3><p>Agenda, reservas, cobros y caja de tu negocio. O la cobranza, los contratos y los reajustes de tu arriendo.</p><p class="ex">Ejemplo: tu clienta reserva de noche y a la mañana ya está en la agenda.</p></div>
+      <div class="st"><span class="k">2 · Controlamos</span><h3>Que todo cuadre</h3><p>Cruzamos lo cobrado con el banco y la máquina de pago, y avisamos cuando algo no calza.</p><p class="ex">Ejemplo: un arriendo pagado incompleto aparece el mismo día, no en marzo.</p></div>
+      <div class="st"><span class="k">3 · Resolvemos</span><h3>Tus impuestos</h3><p>Contabilidad, declaraciones mensuales y renta anual hechas con esos mismos números.</p><p class="ex">Ejemplo: en abril tu renta ya tiene todos los ingresos y respaldos.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Ventajas</span><div class="rule"></div><h2>Lo que cambia cuando trabajas con nosotros.</h2></div>
+    <div class="vs"><table>
+      <thead><tr><th></th><th>Como suele ser hoy</th><th class="us">Con Surtax</th></tr></thead>
+      <tbody>
+        <tr><td>Agenda y cobros</td><td class="no">Cuaderno, WhatsApp y una app por separado</td><td class="us">Agenda, reserva web, caja y cobro con la máquina en un solo lugar</td></tr>
+        <tr><td>Cuadratura</td><td class="no">A fin de mes, si alcanza el tiempo</td><td class="us">Todos los días, contra el banco y Mercado Pago</td></tr>
+        <tr><td>Comisiones y rendiciones</td><td class="no">Calculadas a mano y discutidas</td><td class="us">Calculadas solas y visibles para cada profesional o propietario</td></tr>
+        <tr><td>Contabilidad e impuestos</td><td class="no">Otro proveedor, que recibe los datos tarde</td><td class="us">El mismo equipo, con los mismos datos, a tiempo</td></tr>
+        <tr><td>Atención</td><td class="no">Un centro de ayuda o un formulario</td><td class="us">Por WhatsApp o en persona, con quien conoce tu negocio</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Dos soluciones</span><div class="rule"></div><h2>Lo operativo resuelto, y los impuestos también.</h2><p>Cada solución incluye el trabajo contable y tributario de Surtax hecho con los mismos datos. No tienes que juntar papeles a fin de mes.</p></div>
+    <div class="duo">
+      <article class="prod">
+        <span class="tag">Para salones, barberías, centros de estética y spas</span>
+        <h3>Sur<b>Caja</b></h3>
+        <ul><li>Agenda por profesional y reserva web</li><li>Caja diaria y cobro con la máquina de Mercado Pago</li><li>Comisiones de cada profesional calculadas</li><li>Contabilidad e impuestos del negocio</li></ul>
+        <a class="go" href="#surcaja">Ver SurCaja →</a>
+      </article>
+      <article class="prod">
+        <span class="tag">Para propietarios de departamentos, casas y oficinas</span>
+        <h3>Sur<b>Arriendos</b></h3>
+        <ul><li>Arriendo comparado con el mercado</li><li>Cobro mensual y depósito directo en tu cuenta</li><li>Reajustes y renovaciones avisados a tiempo</li><li>Rendición revisada y renta del arriendo al día</li></ul>
+        <a class="go" href="#surarriendos">Ver SurArriendos →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="surcaja">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">SurCaja</span><div class="rule"></div><h2>Tu clienta reserva de noche. Tú atiendes de día. El resto lo hace SurCaja.</h2></div>
+    <div class="split">
+      <div>
+        <div class="feats">
+          <div class="feat"><h4>Agenda y reserva web</h4><p>Tus clientas eligen servicio, profesional y hora desde tu propio link. Tú confirmas.</p></div>
+          <div class="feat"><h4>Cobro integrado</h4><p>El cobro sale de SurCaja a la máquina de Mercado Pago y la boleta la emite la máquina.</p></div>
+          <div class="feat"><h4>Caja y cierre diario</h4><p>Efectivo, tarjeta y transferencias cuadrados contra lo cobrado, día a día.</p></div>
+          <div class="feat"><h4>Comisiones claras</h4><p>Cada profesional ve lo suyo, con propinas aparte. Tú ves el total del local.</p></div>
+          <div class="feat"><h4>Gift cards</h4><p>Las vendes, las envías por WhatsApp y quedan registradas hasta que se canjean.</p></div>
+          <div class="feat"><h4>Ficha de clientas</h4><p>Historial de servicios y contacto de cada clienta, en un solo lugar.</p></div>
+        </div>
+        <p class="diff">Lo que ningún sistema de agenda te da: la contabilidad y los impuestos de tu negocio, hechos por Surtax con los mismos datos.</p>
+      </div>
+      <aside class="aside">
+        <span class="eyebrow">Ya funciona</span>
+        <img class="nua" src="nuaspa.png" alt="NÚASPA">
+        <h3>NÚASPA, Las Condes</h3>
+        <p>Manicure y pedicure. Opera su agenda, su caja y sus cobros con SurCaja todos los días.</p>
+        <p>Mira su reserva real: <a class="live" href="https://reserva.nuaspa.cl" target="_blank" rel="noopener">reserva.nuaspa.cl</a></p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn solid" href="demo/?o=web" target="_blank" rel="noopener">Prueba la demo</a><a class="btn line" href="#contacto" data-pick="surcaja" style="color:#fff">Pide tu piloto</a></div>
+        <p style="font-size:13px">La demo usa un salón de ejemplo: puedes agendar, cobrar y cerrar caja sin tocar datos reales.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="surarriendos">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">SurArriendos</span><div class="rule"></div><h2>Tu arriendo al día, sin perseguir pagos ni papeles.</h2><p>Surtax administra tu arriendo: cobranza, contratos, reajustes, rendición e impuestos en una sola rutina mensual. Tú recibes el arriendo en tu cuenta y un detalle claro cada mes.</p></div>
+    <div class="split">
+      <div class="feats">
+        <div class="feat"><h4>Arriendo frente al mercado</h4><p>Comparamos tu arriendo con propiedades similares de tu edificio, sector o comuna.</p></div>
+        <div class="feat"><h4>Cobranza diaria</h4><p>Cobro con la UF del día, control de atrasos y multas según contrato, y depósito directo en tu cuenta.</p></div>
+        <div class="feat"><h4>Gastos comunes y cuentas</h4><p>Revisión de que los gastos comunes, la luz y el agua estén pagados.</p></div>
+        <div class="feat"><h4>Reajustes y renovaciones</h4><p>Reajuste por IPC según tu contrato y avisos de renovación dentro de plazo, siempre por escrito.</p></div>
+        <div class="feat"><h4>Rendición revisada</h4><p>Lo cobrado, los descuentos y lo transferido, cuadrado con el banco antes de enviártelo.</p></div>
+        <div class="feat"><h4>Tus impuestos del arriendo</h4><p>Renta de abril, revisión del DFL 2, contribuciones y respaldos de gastos.</p></div>
+      </div>
+      <aside class="aside">
+        <span class="eyebrow">Ya funciona</span>
+        <h3>Sus Raíces Propiedades</h3>
+        <p>Administramos su cartera de departamentos y casas en arriendo: cobranza, contratos, reajustes y rendición a cada propietario, todos los meses.</p>
+        <span class="eyebrow" style="margin-top:6px">Para quién</span>
+        <h3>Propietarios que no quieren ser administradores</h3>
+        <p>Si tienes uno o varios departamentos o casas en arriendo y hoy los controlas en una planilla, en el banco y por WhatsApp, SurArriendos ordena todo eso en una rutina mensual.</p>
+        <p style="font-size:14px">Surtax lleva la administración, la contabilidad y los impuestos de tu arriendo.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn solid" href="demo/arriendos.html?o=web" target="_blank" rel="noopener">Prueba la demo</a><a class="btn line" href="#contacto" data-pick="surarriendos" style="color:#fff">Conversemos tu propiedad</a></div>
+        <p style="font-size:13px">La demo usa una cartera de ejemplo: cobranza, contratos, facturación y rendición, sin tocar propiedades reales.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="ofertas">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Ofertas de lanzamiento</span><div class="rule"></div><h2>Pruébalo con tus datos antes de decidir.</h2><p>Cupos limitados para partir en diciembre y enero.</p></div>
+    <div class="offers">
+      <article class="off">
+        <span class="pr">SurCaja</span>
+        <h3>Piloto sin costo</h3>
+        <div class="big">2 a 3 meses<small>con tus datos reales</small></div>
+        <ul><li>Instalación y carga de tus servicios y clientas</li><li>Reserva web con tu propio link</li><li>Conexión con tu máquina de Mercado Pago</li><li>Una revisión de resultados cada mes</li></ul>
+        <p class="cond">Al terminar revisamos juntos los números y decides si sigues.</p>
+        <a class="btn solid" href="#contacto" data-pick="surcaja" style="justify-self:start">Quiero el piloto</a>
+      </article>
+      <article class="off">
+        <span class="pr">SurArriendos</span>
+        <h3>Revisión gratis de tu arriendo</h3>
+        <div class="big">¿Está bajo el mercado?<small>respuesta en una hoja</small></div>
+        <ul><li>Tu arriendo frente a propiedades similares de tu sector</li><li>Reajuste que te corresponde según tu contrato</li><li>Temas tributarios de tu arriendo para la renta de abril</li></ul>
+        <p class="cond">Sin compromiso. Si te sirve, conversamos la administración.</p>
+        <a class="btn solid" href="#contacto" data-pick="surarriendos" style="justify-self:start">Quiero la revisión</a>
+      </article>
+      <article class="off">
+        <span class="pr">SurArriendos</span>
+        <h3>Primer mes de puesta al día</h3>
+        <div class="big">Contrato en orden<small>antes de empezar a administrar</small></div>
+        <ul><li>Revisión del contrato, la garantía y el inventario</li><li>Cálculo del reajuste pendiente y aviso escrito al arrendatario</li><li>Calendario de renovación y avisos</li></ul>
+        <p class="cond">Las condiciones las conversamos en una reunión, con tu propiedad a la vista.</p>
+        <a class="btn line" href="#contacto" data-pick="surarriendos" style="justify-self:start">Conversemos</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="preguntas">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Preguntas frecuentes</span><div class="rule"></div><h2>Lo que nos preguntan antes de partir.</h2></div>
+    <div class="faq">
+      <details><summary>¿El piloto de SurCaja tiene algún costo?</summary><p>No. Durante el piloto instalamos y acompañamos sin costo. Al terminar revisamos los resultados contigo y, si decides seguir, conversamos el plan.</p></details>
+      <details><summary>¿Necesito la máquina de Mercado Pago?</summary><p>No es obligatoria. Sin ella registras efectivo, transferencias y tarjeta igual. Con una máquina Point el cobro sale directo desde SurCaja y la boleta la emite la máquina.</p></details>
+      <details><summary>¿Puedo seguir con mi contador actual?</summary><p>Sí. SurCaja y SurArriendos funcionan solos. Lo que ganas al trabajar también la contabilidad con Surtax es que todo sale de los mismos datos.</p></details>
+      <details><summary>¿Qué pasa con mis datos y los de mis clientas?</summary><p>Son tuyos. Los usamos solo para prestarte el servicio, firmamos un acuerdo de tratamiento de datos y puedes descargar una copia completa cuando quieras.</p></details>
+      <details><summary>¿Cómo recibo el arriendo con SurArriendos?</summary><p>El arriendo se deposita en tu cuenta cada mes, junto con una rendición que muestra lo cobrado, los descuentos y lo transferido.</p></details>
+      <details><summary>¿Atienden fuera de Puerto Varas?</summary><p>Sí. En la Región de Los Lagos atendemos en persona y en Santiago a distancia, por WhatsApp y videollamada.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="como">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Cómo trabajamos</span><div class="rule"></div><h2>Partimos en pequeño y medimos.</h2></div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3>Conversamos</h3><p>Vemos cómo opera hoy tu negocio o tu propiedad y qué te quita más tiempo.</p></div>
+      <div class="step"><span class="n">2</span><h3>Piloto</h3><p>Dejamos funcionando la solución con tus datos reales durante dos o tres meses.</p></div>
+      <div class="step"><span class="n">3</span><h3>Evaluamos juntos</h3><p>Al cierre revisamos resultados con tus números y decides si seguimos.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="south">
+  <div class="wrap">
+    <span class="eyebrow" style="color:var(--gold-on-navy)">Desde el sur</span>
+    <h2 style="margin-top:8px">Hecho en Puerto Varas, para negocios y propietarios de Los Lagos y Santiago.</h2>
+    <p>Atención cercana, por WhatsApp o en persona, con el mismo equipo que lleva tu contabilidad.</p>
+    <span style="display:block;margin-top:18px;font-size:11px;opacity:.75">Saltos del Petrohué · Foto: João Batista Campos, dominio público (CC0), Wikimedia Commons</span>
+  </div>
+</div>
+
+<section class="contact" id="contacto">
+  <div class="wrap cgrid">
+    <div style="display:grid;gap:14px">
+      <span class="eyebrow">Contacto</span>
+      <h2 style="font-size:clamp(26px,3.6vw,38px)">Cuéntanos qué necesitas.</h2>
+      <p style="opacity:.9">Elige la solución y te dejamos el mensaje listo para enviar por WhatsApp.</p>
+      <div class="chips" role="group" aria-label="Solución">
+        <button class="chip" id="c-surcaja" type="button" aria-pressed="true" data-k="surcaja">SurCaja</button>
+        <button class="chip" id="c-surarriendos" type="button" aria-pressed="false" data-k="surarriendos">SurArriendos</button>
+      </div>
+      <div class="msg" id="msg"></div>
+      <a class="btn solid" id="wa" href="#" target="_blank" rel="noopener" style="justify-self:start">Abrir WhatsApp</a>
+    </div>
+    <div class="cbox">
+      <div class="crow"><div><span class="l">WhatsApp</span><span class="v" id="tel">+56 9 9078 7753</span></div><button class="copy" type="button" data-copy="tel">Copiar</button></div>
+      <div class="crow"><div><span class="l">Correo</span><span class="v" id="mail" style="font-size:17px">jorge.sandoval@surtax.cl</span></div><button class="copy" type="button" data-copy="mail">Copiar</button></div>
+      <div><span class="l" style="font-size:13px;opacity:.75">Dónde estamos</span><p>Puerto Varas, Región de Los Lagos. Atendemos en persona en Los Lagos y a distancia en Santiago.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="surtax-logo-frase.png" alt="Surtax, Gestión y estrategia tributaria">
+    <span>SurCaja y SurArriendos son soluciones de Surtax · Puerto Varas, Chile · <a href="privacidad.html">Política de privacidad</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var T={
+    surcaja:"Hola Jorge, vi SurCaja en la página de Surtax. Tengo un negocio de servicios y me interesa conversar un piloto.",
+    surarriendos:"Hola Jorge, vi SurArriendos en la página de Surtax. Tengo una propiedad en arriendo y me interesa conversar la administración."
+  };
+  var k="surcaja";
+  var msg=document.getElementById("msg"), wa=document.getElementById("wa");
+  function set(n){k=n;document.querySelectorAll(".chip").forEach(function(c){c.setAttribute("aria-pressed",c.dataset.k===n?"true":"false")});
+    msg.textContent=T[n];wa.href="https://wa.me/56990787753?text="+encodeURIComponent(T[n]);}
+  document.querySelectorAll(".chip").forEach(function(c){c.addEventListener("click",function(){set(c.dataset.k)})});
+  document.querySelectorAll("[data-pick]").forEach(function(a){a.addEventListener("click",function(){set(a.dataset.pick)})});
+  document.querySelectorAll(".copy").forEach(function(b){b.addEventListener("click",function(){
+    var el=document.getElementById(b.dataset.copy);var t=el.textContent;
+    var done=function(){b.textContent="Copiado";setTimeout(function(){b.textContent="Copiar"},1600)};
+    var sel=function(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Seleccionado"};
+    try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}
+  })});
+  set(k);
+})();
+</script>
+
+</body>
+</html>
