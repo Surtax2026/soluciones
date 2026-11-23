@@ -101,7 +101,7 @@
       return;
     }
     document.addEventListener("click", function(e){ var a = e.target.closest("[data-demo-no]"); if(!a) return; e.preventDefault(); demoModal("No disponible en la demo", "Los contratos y la firma electrónica de las profesionales se muestran en la reunión, con tu propio salón.", ""); }, true);
-    b.innerHTML ='<div class="in"><span><b>DEMO</b> · Datos de ejemplo: lo que hagas queda solo en este equipo y no se guarda en ningún negocio real.</span>' +
+    b.innerHTML ='<div class="in"><span><b>DEMO</b> · Marca y datos de ejemplo: tu versión llevará tu logo, tus colores y tus servicios. Lo que hagas aquí queda solo en este equipo.</span>' +
       '<span style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label style="display:flex;gap:6px;align-items:center">Ver como <select id="demo-rol">' +
       '<option value="admin">Dueña</option><option value="caja">Caja del local</option>' + pros.map(function(p){ return '<option value="pro:' + p[0] + '">Profesional: ' + p[1] + '</option>'; }).join("") +
       '</select></label><button type="button" id="demo-reset">Reiniciar demo</button><a class="cta" id="demo-cta" href="https://wa.me/56990787753?text=' + encodeURIComponent("Hola Jorge, probé la demo de SurCaja y me interesa conversar un piloto para mi negocio.") + '" target="_blank" rel="noopener">Quiero SurCaja</a></span></div>';

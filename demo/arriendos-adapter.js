@@ -39,7 +39,7 @@
   function bar(){
     if(document.getElementById("demo-bar")) return;
     var b = document.createElement("div"); b.id = "demo-bar";
-    b.innerHTML = '<div class="in"><span><b>DEMO</b> · Cartera de ejemplo: lo que registres queda solo en este equipo y no toca ninguna propiedad real.</span>' +
+    b.innerHTML = '<div class="in"><span><b>DEMO</b> · Cartera de ejemplo: con SurArriendos verás tus propiedades y tus reportes. Lo que registres aquí queda solo en este equipo.</span>' +
       '<span style="display:flex;gap:8px"><button type="button" id="demo-reset">Reiniciar demo</button><a class="cta" id="demo-cta" href="https://wa.me/56990787753?text=' +
       encodeURIComponent("Hola Jorge, probé la demo de SurArriendos y me interesa conversar la administración de mi propiedad.") + '" target="_blank" rel="noopener">Quiero SurArriendos</a></span></div>';
     document.body.appendChild(b);
