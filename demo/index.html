@@ -690,7 +690,7 @@ function vAjustesBase(){
 
 /* ---------- Agenda ---------- */
 const ESTADOS=[["reservada","Reservada","n"],["confirmada","Confirmada","g"],["llego","Llegó","a"],["atendida","Atendida","g"],["noasistio","No asistió","r"],["cancelada","Cancelada","n"]];
-const ORIGENES=[["presencial","En el local"],["whatsapp","WhatsApp"],["instagram","Instagram"],["google","Google"],["agendapro","Marketplace AgendaPro"],["recomendacion","Recomendación"],["web","Reserva web"],["telefono","Teléfono"]];
+const ORIGENES=[["presencial","En el local"],["whatsapp","WhatsApp"],["instagram","Instagram"],["google","Google"],["agendapro","Otra plataforma de reservas"],["recomendacion","Recomendación"],["web","Reserva web"],["telefono","Teléfono"]];
 const PASO=15;
 const estTxt=k=>(ESTADOS.find(e=>e[0]===k)||[k,k,"n"]);
 const toMin=h=>{const m=String(h||"").match(/^(\d{1,2}):(\d{2})/);return m?Number(m[1])*60+Number(m[2]):0};
@@ -745,7 +745,7 @@ function vAgenda(){
     ${window.Notification&&Notification.permission==="default"?`<p class="falta" style="margin:0 0 8px">⚠ Activa los avisos de citas nuevas, cambios y cancelaciones en este equipo. <button class="mini" data-act="avisos-permiso">Activar avisos</button></p>`:""}
     <div class="row-btns"><button class="btn sec" data-act="ag-mover" data-n="-7" aria-label="Semana anterior">‹</button><button class="btn sec" data-act="ag-hoy">Hoy</button><button class="btn sec" data-act="ag-mover" data-n="7" aria-label="Semana siguiente">›</button>
     <label for="ag-fecha" style="min-width:160px"><input id="ag-fecha" type="date" value="${S.agDia}" aria-label="Ir a fecha"></label>
-    <button class="btn" data-act="ag-nueva">+ Nueva cita</button>${!S.myPro&&window.XLSX?`<label for="ap-file" class="btn sec" style="cursor:pointer">Importar AgendaPro<input id="ap-file" type="file" accept=".xlsx,.xls,.csv" hidden></label>`:""}</div></div>
+    <button class="btn" data-act="ag-nueva">+ Nueva cita</button>${!S.myPro&&window.XLSX?`<label for="ap-file" class="btn sec" style="cursor:pointer">Traer mis datos<input id="ap-file" type="file" accept=".xlsx,.xls,.csv" hidden></label>`:""}</div></div>
     ${S.apImp?`<div class="note ${S.apImp.err?"risk":"info"}"><b>${esc(S.apImp.titulo)}</b><span>${esc(S.apImp.msg)}</span>${S.apImp.falta&&S.apImp.falta.length?`<p class="falta">⚠ ${esc(S.apImp.falta.join(" · "))}</p>`:""}</div>`:""}
   <div class="week">${week}</div>
   <div class="kpis">
@@ -857,10 +857,10 @@ const _nrm=x=>String(x??"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase(
 function apFecha(v){if(v instanceof Date&&!isNaN(v))return ymd(v);const t=String(v||"").trim();let m=t.match(/^(\d{4})-(\d{2})-(\d{2})/);if(m)return m[1]+"-"+m[2]+"-"+m[3];m=t.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);if(m){const y=m[3].length===2?"20"+m[3]:m[3];return y+"-"+m[2].padStart(2,"0")+"-"+m[1].padStart(2,"0")}return""}
 function apHora(v){if(v instanceof Date&&!isNaN(v))return String(v.getHours()).padStart(2,"0")+":"+String(v.getMinutes()).padStart(2,"0");if(typeof v==="number"&&v<1){const mm=Math.round(v*1440);return String(Math.floor(mm/60)).padStart(2,"0")+":"+String(mm%60).padStart(2,"0")}const m=String(v||"").match(/(\d{1,2}):(\d{2})/);return m?m[1].padStart(2,"0")+":"+m[2]:""}
 async function ocupDia(f){try{const q=await S.db.collection("citas").where("fecha","==",f).get();const cs=q.docs.map(d=>d.data());const slots=cs.filter(c=>activa(c)&&c.profId&&c.hora).map(c=>({p:c.profId,h:c.hora,d:Number(c.dur)||PASO})).sort((x,y)=>(x.p+x.h).localeCompare(y.p+y.h));await S.db.doc("ocupado/"+f).set({slots,act:new Date().toISOString()});_ocH[f]=JSON.stringify(slots)}catch(e){console.warn("ocupado",e)}}
-async function apImportar(file){S.apImp={titulo:"Leyendo el archivo de AgendaPro…",msg:""};render();
+async function apImportar(file){S.apImp={titulo:"Leyendo tu archivo…",msg:""};render();
   try{const wb=XLSX.read(await file.arrayBuffer(),{type:"array",cellDates:true});const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:"",raw:true});return await apImportarFilas(rows)}
   catch(e){S.apImp={titulo:"No se pudo importar el archivo",msg:String(e.message||e),err:true};render()}}
-window.apImportarFilas=async function(rows){S.apImp={titulo:"Cargando reservas de AgendaPro…",msg:""};render();
+window.apImportarFilas=async function(rows){S.apImp={titulo:"Cargando tus reservas…",msg:""};render();
   try{if(!rows||!rows.length)throw new Error("No llegaron reservas para cargar.");
     const cols=Object.keys(rows[0]);const col=(...pat)=>cols.find(c=>pat.some(p=>_nrm(c).includes(p)));
     const cF=col("fecha"),cH=col("hora","inicio"),cP=col("profesional","prestador","staff","recurso"),cC=col("cliente","nombre"),cS=col("servicio"),cE=col("estado"),cT=col("telefono","celular","fono","movil"),cM=col("correo","email","mail"),cD=col("duracion");
@@ -873,19 +873,19 @@ window.apImportarFilas=async function(rows){S.apImp={titulo:"Cargando reservas d
       if(!pro){sinPro[String(r[cP]||"(sin nombre)")]=(sinPro[String(r[cP]||"(sin nombre)")]||0)+1;continue}
       const q=await S.db.collection("citas").where("fecha","==",fecha).get();const ya=q.docs.map(d=>d.data()).some(c=>c.profId===pro.id&&c.hora===hora&&activa(c));
       if(ya){yaEstaban++;continue}
-      const nom=String(r[cC]||"").trim()||"Clienta AgendaPro";const tel=String(cT?r[cT]:"").trim();const mail=String(cM?r[cM]:"").trim();
+      const nom=String(r[cC]||"").trim()||"Clienta importada";const tel=String(cT?r[cT]:"").trim();const mail=String(cM?r[cM]:"").trim();
       let cli=S.clientas.find(c=>(tel&&telNorm(c.telefono)&&telNorm(c.telefono)===telNorm(tel))||(mail&&_nrm(c.correo)===_nrm(mail)))||S.clientas.find(c=>_nrm(c.nombre)===_nrm(nom));
       const now=new Date().toISOString();let cliId=cli?cli.id:null;
       if(!cli){const cd={nombre:nom,telefono:tel,correo:mail,creado:now,origen:"agendapro"};const ref=await S.db.collection("clientas").add(cd);cliId=ref.id;cliIdx(cliId,cd)}
       const svNom=String(cS?r[cS]:"").trim();const sv=S.servs.find(x=>_nrm(x.nombre)===_nrm(svNom))||S.servs.find(x=>svNom&&_nrm(x.nombre).includes(_nrm(svNom).slice(0,18)));
       const dur=Number(cD?String(r[cD]).replace(/\D/g,""):0)||(sv?durDe(sv,pro.id):60);
       await S.db.collection("citas").add({tipo:"cita",fecha,hora,dur,profId:pro.id,profNombre:pro.nombre,clientaId:cliId,clientaNombre:cli?cli.nombre:nom,telefono:cli?(cli.telefono||tel):tel,
-        servicios:[{id:sv?sv.id:"",nombre:sv?sv.nombre:(svNom||"Servicio AgendaPro"),precio:sv?Number(sv.precio)||0:0,dur}],precio:sv?Number(sv.precio)||0:0,origen:"agendapro",nota:"Importada desde AgendaPro",estado:"reservada",creado:now,modificado:now});
+        servicios:[{id:sv?sv.id:"",nombre:sv?sv.nombre:(svNom||"Servicio importado"),precio:sv?Number(sv.precio)||0:0,dur}],precio:sv?Number(sv.precio)||0:0,origen:"agendapro",nota:"Importada desde tu archivo anterior",estado:"reservada",creado:now,modificado:now});
       nuevas++;fechas[fecha]=1}
     for(const f of Object.keys(fechas))await ocupDia(f);
     const fl=Object.entries(sinPro).map(([n,k])=>`${k} cita(s) de "${n}" sin profesional activa en SurCaja`);
-    S.apImp={titulo:`AgendaPro: ${nuevas} cita(s) nueva(s) cargada(s)`,msg:`${yaEstaban} ya estaban en SurCaja, ${pasadas} eran de días pasados y ${canceladas} estaban canceladas. Las horas nuevas quedaron bloqueadas en tu página de reservas.`,falta:fl};
-    toast(nuevas?"Reservas de AgendaPro cargadas":"No había reservas nuevas");subAgenda();render();return{nuevas,yaEstaban,pasadas,canceladas,sinPro}}
+    S.apImp={titulo:`Importación: ${nuevas} cita(s) nueva(s) cargada(s)`,msg:`${yaEstaban} ya estaban en SurCaja, ${pasadas} eran de días pasados y ${canceladas} estaban canceladas. Las horas nuevas quedaron bloqueadas en tu página de reservas.`,falta:fl};
+    toast(nuevas?"Reservas cargadas":"No había reservas nuevas");subAgenda();render();return{nuevas,yaEstaban,pasadas,canceladas,sinPro}}
   catch(e){S.apImp={titulo:"No se pudo importar",msg:String(e.message||e),err:true};render();return{error:String(e.message||e)}}}
 function syncOcup(a,b){if(S.myPro||!S.db)return;const h0=hoy();
   for(let f=a;f<=b;f=masDias(f,1)){if(f<h0)continue;
