@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset=utf8><meta name="robots" content="noindex"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+<!doctype html><html><head><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><meta charset=utf8><meta name="robots" content="noindex"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
 body{font-variant-numeric:tabular-nums}
 .sc-foot{display:flex;align-items:center;gap:12px;max-width:1040px;margin:32px auto 0;padding:20px max(16px,env(safe-area-inset-left,0px)) 72px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
 .sc-foot img{width:40px;height:auto;background:#fff;padding:4px}
@@ -64,6 +64,9 @@ p{margin:0}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:0;padding:18px;display:grid;gap:14px;min-width:0}
 .sticky{position:sticky;top:calc(env(safe-area-inset-top,0px) + 76px)}
 @media (max-width:820px){.sticky{position:static}}
+@media (min-width:821px){.panel.sticky{position:sticky;top:calc(var(--barh,72px) + 12px);max-height:calc(100vh - var(--barh,72px) - 24px);overflow:auto;overscroll-behavior:contain}}
+.ir-cobro{display:none}
+@media (max-width:820px){.ir-cobro{display:block;position:fixed;z-index:6;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));bottom:calc(12px + env(safe-area-inset-bottom,0px));font:700 17px var(--f-body);min-height:52px;border:0;background:var(--plum);color:var(--plum-ink);box-shadow:0 6px 18px rgba(0,0,0,.18);cursor:pointer}}
 .line{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
 .line b{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .big{font-size:20px}
@@ -175,6 +178,7 @@ body.wide .grid-wrap{max-height:calc(100vh - 130px)}
     <a class="navlink" id="nav-gastos" href="gastos.html" hidden>Gastos</a>
     <a class="navlink" id="nav-contratos" href="#" data-demo-no="contratos" hidden>Contratos</a>
     <a class="navlink" href="#" data-demo-no="firmas">Firmas</a>
+    
   </nav>
 </div></div>
 <main><div class="page" id="app">
@@ -184,10 +188,10 @@ body.wide .grid-wrap{max-height:calc(100vh - 130px)}
 <div id="toast" class="toast" hidden></div>
 <meta name="theme-color" content="#A9864A"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="SurCaja"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <script>window.DEMO_LEAD={demo:"surcaja"}</script>
-<script src="seed-caja.js?v=20261123"></script>
-<script src="demo-db.js?v=20261123"></script>
-<script src="lead.js?v=20261123"></script>
-<script src="demo-adapter.js?v=20261123"></script>
+<script src="seed-caja.js?v=20261124"></script>
+<script src="demo-db.js?v=20261124"></script>
+<script src="lead.js?v=20261124"></script>
+<script src="demo-adapter.js?v=20261124"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
@@ -234,9 +238,9 @@ async function init(){
   try{S.admin=user?await user.canEdit():false}catch(e){S.admin=false}
   S.rol=user&&user.rol?user.rol():(S.admin?"admin":"caja");S.myPro=user&&user.profId?user.profId():null;
   if(S.myPro){S.tab="registrar";S.sel.pro=S.myPro}
-  if(S.admin)db.collection("usuarios").onSnapshot(q=>{S.usuarios=q.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.email).localeCompare(String(b.email)));render()},err);
+  if(S.admin)db.collection("usuarios").onSnapshot(q=>{S.usuarios=q.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.email).localeCompare(String(b.email)));syncCorreosPro();render()},err);
   if(S.myPro)db.doc("profesionales/"+S.myPro).onSnapshot(s=>{S.pros=s.exists?[{id:s.id,...s.data()}]:[];S.ready=true;render()},err);else
-  db.collection("profesionales").onSnapshot(q=>{S.pros=q.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre),"es"));S.ready=true;render()},err);
+  db.collection("profesionales").onSnapshot(q=>{S.pros=q.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre),"es"));syncCorreosPro();S.ready=true;render()},err);
   db.collection("servicios").onSnapshot(q=>{S.servs=q.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>catOrd(a.categoria)-catOrd(b.categoria)||String(a.categoria||"").localeCompare(String(b.categoria||""),"es")||String(a.nombre).localeCompare(String(b.nombre),"es"));render()},err);
   db.doc("config/general").onSnapshot(s=>{S.cfg=Object.assign({base:"neto"},s.exists?s.data():{});render()},err);
   if(!S.myPro)subClientas(db);
@@ -267,7 +271,16 @@ function startAvisos(){if(S._avisosOn||!window.firebase||!firebase.auth().curren
       if(primero||ch.doc.metadata.hasPendingWrites||(c.tipo||"cita")==="bloqueo")return;if(String(c.modificado||c.creado||"")<t0)return;if(ch.type==="removed")return;
       const sv=(c.servicios||[]).map(x=>x.nombre).join(", ");const det=`${c.clientaNombre||"Clienta"} · ${sv} · ${fechaLarga(c.fecha)} ${c.hora} con ${c.profNombre||""}`;
       if(ch.type==="added"&&!antes)avisar("Nueva cita",det);else if(c.estado==="cancelada"&&(!antes||antes.split("|")[2]!=="cancelada"))avisar("Cita cancelada",det);else if(antes&&antes!==k&&c.estado!=="cancelada")avisar("Cita modificada",det)});primero=false},e=>{S._avisosOn=false;console.warn(e)})}
-async function avisoClienta(c,tipo){try{if(!c||(c.tipo||"cita")==="bloqueo")return;const cli=S.clientas.find(x=>x.id===c.clientaId);const to=cli&&String(cli.correo||cli.email||"").trim();if(!to||!/@/.test(to))return;
+function proCorreo(pid){const p=(S.pros||[]).find(x=>x.id===pid);return p&&String(p.avisoCorreo||"").trim()}
+async function avisoPro(c,tipo,antes){try{if(!c||(c.tipo||"cita")==="bloqueo"||!c.profId)return;if(S.myPro&&S.myPro===c.profId)return;
+  const to=proCorreo(c.profId);if(!to||!/@/.test(to))return;
+  await mpApi("/aviso-profesional",{method:"POST",body:JSON.stringify({to,tipo,profesional:c.profNombre||"",clienta:c.clientaNombre||"Clienta",fecha:fechaLarga(c.fecha),fechaCorta:fechaCorta(c.fecha),hora:c.hora,
+    duracion:c.dur||"",servicios:(c.servicios||[]).map(s=>s.nombre).join(", "),nota:String(c.nota||"").replace(/^Reserva web automática\.\s*/,"Reserva web. ").slice(0,200),antes:antes||"",local:S.cfg.local||"Salón Brisa"})})}
+  catch(e){if(e&&e.status!==409)console.warn("aviso profesional",e)}}
+function syncCorreosPro(){if(!S.admin||!S.usuarios||!S.pros||!S.db)return;
+  S.usuarios.forEach(u=>{const em=String(u.email||u.id||"").trim().toLowerCase();if(!u.profId||!/@/.test(em))return;const p=S.pros.find(x=>x.id===u.profId);
+    if(p&&p.avisoCorreo!==em&&!(syncCorreosPro.hecho||{})[p.id+em]){(syncCorreosPro.hecho=syncCorreosPro.hecho||{})[p.id+em]=1;S.db.doc("profesionales/"+p.id).update({avisoCorreo:em}).catch(e=>console.warn("correo pro",e))}})}
+async function avisoClienta(c,tipo){try{if(!c||(c.tipo||"cita")==="bloqueo")return;const cli=S.clientas.find(x=>x.id===c.clientaId);const to=String(c._correo||"").trim()||(cli&&String(cli.correo||cli.email||"").trim());if(!to||!/@/.test(to))return;
   await mpApi("/aviso-clienta",{method:"POST",body:JSON.stringify({to,tipo,nombre:String(c.clientaNombre||"").split(" ")[0],fecha:fechaLarga(c.fecha),hora:c.hora,servicios:(c.servicios||[]).map(s=>s.nombre).join(", "),profesional:c.profNombre||"",local:S.cfg.local||"Salón Brisa",direccion:S.cfg.direccion||"",whatsapp:S.cfg.whatsapp||"",reserva:RESERVA_URL})});toast("Aviso enviado por correo a "+to)}catch(e){if(e&&e.status!==409)console.warn("aviso correo",e)}}
 function subAgenda(){try{startAvisos()}catch(e){}
   if(!S.db)return;
@@ -288,7 +301,9 @@ function subDia(){
 }
 
 /* ---------- Render ---------- */
+window.addEventListener("resize",()=>{const bb=document.querySelector(".bar");if(bb)document.documentElement.style.setProperty("--barh",bb.offsetHeight+"px")});
 function render(){
+  {const bb=document.querySelector(".bar");if(bb)document.documentElement.style.setProperty("--barh",bb.offsetHeight+"px")}
   if(S.admin&&S.ready&&S.servs.length)pubCatDeb();
   document.querySelectorAll("#nav button").forEach(b=>{b.setAttribute("aria-current",b.dataset.tab===S.tab?"page":"false")});
   $("#tab-ajustes").hidden=!S.admin&&!S.offline;$("#tab-reportes").hidden=!S.admin&&!S.offline;
@@ -345,7 +360,8 @@ function vRegistrar(){
         ${Object.entries(cats).map(([c,arr])=>`<div class="cat">${esc(c)}</div><div class="svc-grid">${arr.map(s=>{const q=sel.items[s.id]||0;return`<button class="svc" data-act="svc" data-id="${esc(s.id)}" data-on="${q>0}"><b>${esc(s.nombre)}</b><span class="p">${clp(s.precio)}</span>${q>0?`<span class="qty">${q}</span>`:""}</button>`}).join("")}</div>`).join("")}
       </div>
     </div>
-    <div class="panel sticky" aria-label="Resumen del cobro">
+    ${items.length?`<button class="ir-cobro" data-act="ir-cobro">Ir al cobro · ${clp(cobrado)}</button>`:""}
+    <div class="panel sticky" id="panel-cobro" aria-label="Resumen del cobro">
       <h2>3. Cobro</h2>
       ${items.length?`<div class="sel-list">${items.map(x=>`<div class="sel-item"><span>${x.q>1?x.q+" × ":""}${esc(x.s.nombre)}</span><span class="row-btns"><span class="num">${clp((Number(x.s.precio)||0)*x.q)}</span><button class="mini" data-act="menos" data-id="${esc(x.s.id)}" aria-label="Quitar uno">−</button></span></div>`).join("")}</div>`:`<p class="muted">Toca uno o más servicios.</p>`}
       <div class="fields">
@@ -810,8 +826,8 @@ async function guardarCita(){if(S.form)S.form.err="";const {F,pro,items,dur,prec
     const doc=F.tipo==="bloqueo"?{tipo:"bloqueo",fecha:F.fecha,hora:F.hora,dur,profId:pro.id,profNombre:pro.nombre,motivo:F.motivo.trim(),estado:"reservada",modificado:now}
       :{tipo:"cita",fecha:F.fecha,hora:F.hora,dur,profId:pro.id,profNombre:pro.nombre,clientaId:cId,clientaNombre:cNom,telefono:cTel,
         servicios:items.map(s=>({id:s.id,nombre:s.nombre,precio:Number(s.precio)||0,dur:durDe(s,F.pro)})),precio,origen:F.origen,nota:F.nota.trim(),modificado:now};
-    if(F.id){const ant=citaPorId(F.id);await S.db.doc("citas/"+F.id).update(doc);toast("Cita actualizada");if(ant&&(ant.fecha!==doc.fecha||ant.hora!==doc.hora||ant.profId!==doc.profId))avisoClienta(Object.assign({},ant,doc),"modificada")}
-    else{doc.estado="reservada";doc.creado=now;const ref=await S.db.collection("citas").add(doc);avisoClienta(doc,"agendada");if(F.solId){try{await S.db.doc("solicitudes/"+F.solId).update({estado:"agendada",citaId:ref.id,modificado:now})}catch(e){console.warn(e)}}toast(F.tipo==="bloqueo"?"Horario bloqueado":`Agendada: ${cNom}, ${fechaCorta(F.fecha)} ${F.hora}`)}
+    if(F.id){const ant=citaPorId(F.id);await S.db.doc("citas/"+F.id).update(doc);toast("Cita actualizada");if(ant&&(ant.fecha!==doc.fecha||ant.hora!==doc.hora||ant.profId!==doc.profId)){const nv=Object.assign({},ant,doc);avisoClienta(nv,"modificada");if(ant.profId!==nv.profId){avisoPro(ant,"reasignada");avisoPro(nv,"agendada")}else avisoPro(nv,"modificada",fechaCorta(ant.fecha)+" "+ant.hora)}}
+    else{doc.estado="reservada";doc.creado=now;const ref=await S.db.collection("citas").add(doc);avisoClienta(doc,"agendada");avisoPro(doc,"agendada");if(F.solId){try{await S.db.doc("solicitudes/"+F.solId).update({estado:"agendada",citaId:ref.id,modificado:now})}catch(e){console.warn(e)}}toast(F.tipo==="bloqueo"?"Horario bloqueado":`Agendada: ${cNom}, ${fechaCorta(F.fecha)} ${F.hora}`)}
     if(F.fecha!==S.agDia){S.agDia=F.fecha;subAgenda()}
     S.form=null;render();
   }catch(e){fail(e)}
@@ -901,16 +917,17 @@ async function autoAgendar(lista){if(_autoBusy||S.myPro||!S.db)return;if(!S.pros
           if(!h||m<h.a||m+D>h.b)continue;if(choques({id:null,profId:p.id,fecha:s.fecha,hora:s.hora,dur:D},dia).length)continue;pro=p;dur=D;break}
         if(!pro){await devolver("La hora ya no está libre");continue}
         const now=new Date().toISOString();
+        const nt=String(s.nota||""),cm=nt.match(/\[correo:([^\]\s]+)\]/),sMail=cm?cm[1].slice(0,80):"",sWa=/\[wa:si\]/.test(nt);
         const cli=S.clientas.find(c=>telNorm(c.telefono)&&telNorm(c.telefono)===telNorm(s.telefono));let cId,cNom,cTel;
-        if(cli){cId=cli.id;cNom=cli.nombre;cTel=cli.telefono||s.telefono||""}
-        else{cNom=String(s.nombre||"").trim();cTel=String(s.telefono||"").trim();const cd={nombre:cNom,telefono:cTel,creado:now,origen:"web"};const r=await S.db.collection("clientas").add(cd);cId=r.id;cliIdx(cId,cd)}
+        if(cli){cId=cli.id;cNom=cli.nombre;cTel=cli.telefono||s.telefono||"";const up={};if(sMail&&!cli.correo)up.correo=sMail;if(sWa&&!cli.waOptIn)up.waOptIn=now;if(Object.keys(up).length){try{await S.db.doc("clientas/"+cId).update(up);cliIdx(cId,(({id,...r})=>r)(Object.assign({},cli,up)))}catch(e){console.warn("clienta web",e)}}}
+        else{cNom=String(s.nombre||"").trim();cTel=String(s.telefono||"").trim();const cd={nombre:cNom,telefono:cTel,creado:now,origen:"web"};if(sMail)cd.correo=sMail;if(sWa)cd.waOptIn=now;const r=await S.db.collection("clientas").add(cd);cId=r.id;cliIdx(cId,cd)}
         const om=String(s.nota||"").match(/^\[origen:([a-z]+)\]/);const org=om&&ORIGENES.some(x=>x[0]===om[1])?om[1]:"web";
         const doc={tipo:"cita",fecha:s.fecha,hora:s.hora,dur,profId:pro.id,profNombre:pro.nombre,clientaId:cId,clientaNombre:cNom,telefono:cTel,
           servicios:items.map(x=>({id:x.id,nombre:x.nombre,precio:Number(x.precio)||0,dur:durDe(x,pro.id)})),precio:items.reduce((a,x)=>a+(Number(x.precio)||0),0),
-          origen:org,nota:("Reserva web automática. "+String(s.nota||"").replace(/^\[origen:[a-z]+\]\s*/,"")).trim(),estado:"reservada",creado:now,modificado:now};
+          origen:org,nota:("Reserva web automática. "+(sWa?"Acepta WhatsApp. ":"")+nt.replace(/\[(origen|correo|wa):[^\]]*\]\s*/g,"")).trim(),estado:"reservada",creado:now,modificado:now};
         const c=await S.db.collection("citas").add(doc);
         await ref.update({estado:"agendada",citaId:c.id,auto:true,modificado:now});
-        await ocupDia(s.fecha);avisoClienta(doc,"agendada");
+        await ocupDia(s.fecha);avisoClienta(Object.assign({},doc,{_correo:sMail}),"agendada");avisoPro(doc,"agendada");
         toast(`Reserva web agendada sola: ${cNom}, ${fechaCorta(s.fecha)} ${s.hora} con ${pro.nombre}`)}
       catch(e){console.warn("reserva auto",e);await devolver("No se pudo agendar sola")}}}
   finally{_autoBusy=false}}
@@ -1012,7 +1029,7 @@ document.addEventListener("click",async ev=>{
   if(a==="f-forzar"){S.form.forzar=true;render();return}
   if(a==="f-guardar")return guardarCita();
   if(a==="c-estado"){const k=b.dataset.k;await S.db.doc("citas/"+id).update({estado:k,modificado:new Date().toISOString()});
-    const c=citaPorId(id);if(k==="cancelada"&&c&&c.estado!=="cancelada")avisoClienta(c,"cancelada");if(c&&S.cli.hist){const h=S.cli.hist.find(x=>x.id===id);if(h)h.estado=k}
+    const c=citaPorId(id);if(k==="cancelada"&&c&&c.estado!=="cancelada"){avisoClienta(c,"cancelada");avisoPro(c,"cancelada")}if(c&&S.cli.hist){const h=S.cli.hist.find(x=>x.id===id);if(h)h.estado=k}
     toast("Estado: "+estTxt(k)[1]+(k==="cancelada"&&c&&c.telefono?". Puedes avisarle por WhatsApp.":""));render();return}
   if(a==="c-wsp"){const c=citaPorId(id);if(c)await enviarWsp(c,b.dataset.k);return}
   if(a==="c-cobrar"){const c=citaPorId(id);if(c)cobrarCita(c);return}
@@ -1044,6 +1061,7 @@ document.addEventListener("click",async ev=>{
   if(a==="copiar-reserva"){try{await navigator.clipboard.writeText(RESERVA_URL);toast("Link copiado")}catch(e){toast(RESERVA_URL)}return}
   if(a==="cfg-agenda"){const v=k=>$(k).value.trim();
     await S.db.doc("config/general").set(Object.assign({},S.cfg,{local:v("#cf-local")||"Salón Brisa",direccion:v("#cf-dir"),whatsapp:v("#cf-wsp"),abre:v("#cf-abre")||"10:00",cierra:v("#cf-cierra")||"20:00",instagram:v("#cf-ig").replace(/^@/,""),cierraSab:v("#cf-cierra-sab"),cerrados:[0,1,2,3,4,5,6].filter(i=>{const c=$("#cf-cd-"+i);return c&&c.checked})}));toast("Datos de la agenda guardados");return}
+  if(a==="ir-cobro"){const pc=$("#panel-cobro");if(pc)pc.scrollIntoView({behavior:"smooth",block:"start"});return}
   if(a==="sel-limpiar"){S.sel={pro:null,items:{},cobrado:null,manual:false,propina:"",medio:"tarjeta",op:"",nota:""};render();return}
   if(a==="pro"){sel.pro=sel.pro===id?null:id;render();return}
   if(a==="svc"){sel.items[id]=(sel.items[id]||0)+1;render();return}
