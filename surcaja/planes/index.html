@@ -11,15 +11,15 @@
 <style>
 :root{
   --bg:#FFFFFF; --bg-2:#F5F6F8; --ink:#22252B; --muted:#4A5060; --line:#E2E5EC;
-  --navy:#06213C; --navy-ink:#FFFFFF; --gold:#A98A54; --gold-t:#8E6A2E; --ok:#2E6B4F; --warn:#9A5B0E; --warn-bg:#FBF1E0; --logo-bg:transparent; --frame:#06213C;
+  --navy:#06213C; --navy-ink:#FFFFFF; --gold:#A98A54; --gold-t:#8E6A2E; --ok:#2E6B4F; --warn:#9A5B0E; --warn-bg:#FBF1E0; --logo-bg:transparent; --frame:#06213C; --navy-band:#06213C;
   --f-d:"Playfair Display",Georgia,"Times New Roman",serif; --f-s:"PT Sans","Segoe UI",Calibri,Arial,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#0B1A2E; --bg-2:#12263F; --ink:#EEF1F6; --muted:#BAC3D2; --line:#24395A;
-  --navy:#E9EEF6; --navy-ink:#06213C; --gold:#C9A66A; --gold-t:#D8B77B; --ok:#6CC59A; --warn:#F0B260; --warn-bg:#2E2414; --logo-bg:#FFFFFF; --frame:#3A4C66; color-scheme:dark}}
+  --navy:#E9EEF6; --navy-ink:#06213C; --gold:#C9A66A; --gold-t:#D8B77B; --ok:#6CC59A; --warn:#F0B260; --warn-bg:#2E2414; --logo-bg:#FFFFFF; --frame:#3A4C66; --navy-band:#12263F; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#0B1A2E; --bg-2:#12263F; --ink:#EEF1F6; --muted:#BAC3D2; --line:#24395A;
-  --navy:#E9EEF6; --navy-ink:#06213C; --gold:#C9A66A; --gold-t:#D8B77B; --ok:#6CC59A; --warn:#F0B260; --warn-bg:#2E2414; --logo-bg:#FFFFFF; --frame:#3A4C66; color-scheme:dark}
+  --navy:#E9EEF6; --navy-ink:#06213C; --gold:#C9A66A; --gold-t:#D8B77B; --ok:#6CC59A; --warn:#F0B260; --warn-bg:#2E2414; --logo-bg:#FFFFFF; --frame:#3A4C66; --navy-band:#12263F; color-scheme:dark}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}body{margin:0}img{max-width:100%}
 body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-s)}
@@ -98,6 +98,61 @@ footer{padding-block:28px;font-size:13px;color:var(--muted)}
 @media (max-width:900px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.hero .wrap{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.two{grid-template-columns:1fr}dl{grid-template-columns:1fr}dt{border-bottom:0;padding-bottom:0}}
 @media (max-width:520px){.plans{grid-template-columns:1fr}.steps{grid-template-columns:1fr}}
+
+.cierre{background:var(--navy-band);color:#fff;border-bottom:0}
+.cierre h2{color:#fff}.cierre .eb{color:#D8B77B}.cierre .lead2{color:#D5DCE6;margin-top:12px;font-size:18px;max-width:46ch}
+.cierre-in{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:40px;align-items:center}
+.contact{margin:0;display:grid;grid-template-columns:auto 1fr;border-top:1px solid rgba(255,255,255,.25)}
+.contact dt,.contact dd{border-bottom:1px solid rgba(255,255,255,.25);padding:12px 0;color:#fff}
+.contact dt{color:#D8B77B;font-weight:700;padding-right:28px;white-space:nowrap}.contact a{color:#fff}
+@media (max-width:760px){.cierre-in{grid-template-columns:1fr}}
+@page{size:A4;margin:12mm 13mm}
+@media print{
+  :root,:root[data-theme]{--bg:#FFFFFF;--bg-2:#F4F6F9;--ink:#22252B;--muted:#4A5060;--line:#DDE2EA;--navy:#06213C;--navy-ink:#FFFFFF;--gold:#A98A54;--gold-t:#8E6A2E;--logo-bg:transparent;--frame:#06213C;color-scheme:light}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{font-size:11pt;line-height:1.45}
+  .pad{padding-left:0;padding-right:0}
+  .wrap{max-width:none}
+  .draft,.annex,.cta,header .btn{display:none!important}
+  header{padding-block:0 10px}
+  section{padding-block:22px;border-bottom:0}
+  .hero{background:var(--navy);color:#fff;padding:26px 24px!important;margin-top:12px}
+  .hero h1{color:#fff;font-size:26pt}.hero .eb{color:#D8B77B}.hero p.lead{color:#D5DCE6;font-size:12.5pt}
+  .hero .wrap{grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr);gap:26px}
+  .phone{max-width:200px;border-width:6px;box-shadow:none;border-color:#fff}.cap{color:#C9D2DE}
+  h2{font-size:19pt;break-after:avoid}h3{break-after:avoid}.eb{break-after:avoid}
+  .grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid3>div{padding:14px;break-inside:avoid}
+  .grid3 h3{font-size:12.5pt}
+  .two{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .box,.plan,.steps>div,tr,.cierre-in,dl>*{break-inside:avoid}
+  #planes{break-before:page}
+  .eb{display:block}
+  :root{--gold-t:#7A5C28}
+  table{font-size:10pt!important}#condiciones dl{font-size:10pt!important}
+  #condiciones dl{grid-template-columns:34% 1fr}
+  .hero .eb{letter-spacing:.1em}
+  #contratar,#lanzamiento,#rubros .wrap,#contacto{break-inside:avoid}
+  #comparacion,#condiciones{padding-block:14px}
+  #condiciones dl{font-size:9.5pt}#condiciones dt,#condiciones dd{padding:5px 0}
+  .cierre{padding:40px 36px!important;break-before:page;min-height:150mm;display:flex;align-items:center}
+  .cierre .wrap{width:100%}.cierre-in{grid-template-columns:1fr!important;gap:36px}.cierre h2{font-size:30pt}.cierre .lead2{font-size:14pt}
+  .contact{font-size:13pt}.contact dt,.contact dd{padding:14px 0}.contact dt{padding-right:32px}
+  #lanzamiento,#contratar{padding-block:12px}.box{padding:14px}.box .big{font-size:17pt}.two{margin-top:12px}.steps{margin-top:12px}
+  .plans{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .plan{padding:24px 16px 16px}.plan>p.muted{min-height:0}
+  .price{font-size:24pt}
+  .plan ul{font-size:10pt}
+  .tbl{overflow:visible}table{min-width:0;font-size:10pt}th,td{padding:7px 8px}
+  #lanzamiento{break-before:page}
+  .plan ul{gap:4px}.plan{gap:8px}
+  .steps{grid-template-columns:repeat(4,minmax(0,1fr))}
+  dl{grid-template-columns:minmax(0,.3fr) minmax(0,1fr);font-size:10pt}dt,dd{padding:8px 0}
+  .cierre{padding:24px!important;break-inside:avoid;margin-top:8px}
+  .cierre-in{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:24px}
+  footer{padding-block:14px}
+  a{color:inherit;text-decoration:none}
+}
 </style>
 </head>
 <body>
@@ -123,11 +178,11 @@ footer{padding-block:28px;font-size:13px;color:var(--muted)}
   <span class="eb">Por qué SurCaja</span>
   <h2 style="margin-top:8px">Lo que un sistema de agenda no te da</h2>
   <div class="grid3">
-    <div><h3>Hecho por contadores</h3><p class="muted">Lo que registras en la caja es lo que se declara. Nadie vuelve a digitar tus ventas ni tus gastos.</p></div>
+    <div><h3>Hecho por contadores</h3><p class="muted">Lo que registras en la caja queda ordenado para tu contabilidad y, en los planes Contables, nosotros lo declaramos. Nadie vuelve a digitar tus ventas.</p></div>
     <div><h3>Cobra en tu máquina</h3><p class="muted">El monto viaja directo a tu máquina de Mercado Pago y la boleta la emite la máquina. Varios servicios o vendedores se cobran en una sola pasada de tarjeta.</p></div>
     <div><h3>Con tu marca</h3><p class="muted">Tu logo, tus colores, tus servicios y tus precios, en la aplicación y en tu página de reservas.</p></div>
     <div><h3>Te responde alguien que conoce tu negocio</h3><p class="muted">El soporte lo da el mismo equipo que configura tu SurCaja y lleva tu contabilidad.</p></div>
-    <div><h3>Precio claro</h3><p class="muted">Un valor fijo por local, con 5 usuarios incluidos y cada adicional a la vista antes de contratar.</p></div>
+    <div><h3>Precio claro</h3><p class="muted">Un valor fijo por local, con 5 usuarios incluidos. Si necesitas más, sabes el costo desde el primer día.</p></div>
     <div><h3>Tus datos son tuyos</h3><p class="muted">Sin permanencia: si te vas, te entregamos la información de tu negocio en Excel.</p></div>
   </div>
 </div></section>
@@ -140,26 +195,9 @@ footer{padding-block:28px;font-size:13px;color:var(--muted)}
       <ul class="chips"><li>Salones de belleza</li><li>Peluquerías</li><li>Barberías</li><li>Manicure y uñas</li><li>Cejas y pestañas</li><li>Maquillaje</li><li>Spa y masajes</li><li>Centros de estética</li><li>Terapias complementarias</li><li>Podología</li></ul>
       <p class="muted">Agenda, reservas, cobro en tu máquina, comisiones y contabilidad, listos desde el primer día.</p></div>
     <div class="box pronto"><span class="st">Próximamente para</span>
-      <ul class="chips"><li>Psicología</li><li>Nutrición</li><li>Kinesiología</li><li>Fonoaudiología</li><li>Clínicas estéticas</li><li>Comercios con productos</li></ul>
+      <ul class="chips"><li>Psicología</li><li>Nutrición</li><li>Kinesiología</li><li>Fonoaudiología</li><li>Clínicas con ficha médica</li><li>Comercios con inventario</li></ul>
       <p class="muted">Estamos sumando ficha de atención por paciente, consentimiento firmado, packs de sesiones prepagadas y control de stock. Si tu rubro está aquí, conversemos: puedes ser parte de los primeros en usarlo.</p></div>
   </div>
-</div></section>
-
-<section class="pad" id="planes"><div class="wrap">
-  <span class="eb">Planes mensuales</span>
-  <h2 style="margin-top:8px">Elige tu plan</h2>
-  <p class="muted" style="margin-top:8px">Valores en UF más IVA, pagados en pesos al valor de la UF del día de facturación. Hasta 5 usuarios incluidos en todos los planes. Referencia en pesos con la UF del 24-11-2026.</p>
-  <div class="plans">
-    <article class="plan"><h3>SurCaja</h3><p class="muted" style="font-size:14.5px">La caja de tu negocio, cuadrada cada día.</p>
-      <div><div class="price">0,75 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $31.049 + IVA</div></div><ul><li>Registro de ventas desde el celular de cada persona del equipo</li><li>Cobro integrado con tu máquina de Mercado Pago</li><li>Varios vendedores o servicios en una sola pasada de tarjeta</li><li>Cierre de caja diario</li><li>Liquidación de comisiones y propinas</li><li>Gift cards</li><li>Gastos con la foto del respaldo</li><li>Reportes y estadísticas en Excel</li></ul></article>
-    <article class="plan"><h3>SurCaja Agenda</h3><p class="muted" style="font-size:14.5px">Para negocios que atienden con hora.</p>
-      <div><div class="price">1,2 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $49.678 + IVA</div></div><ul><li class="base">Todo SurCaja, más:</li><li>Agenda por persona del equipo</li><li>Página de reservas con tu marca, para Instagram y Google</li><li>Las reservas web se agendan solas</li><li>Ficha de clientes con historial e inasistencias</li><li>Confirmación y recordatorio por WhatsApp con un toque</li><li>Aviso por correo a quien atiende cuando le agendan, cambian o cancelan una hora</li><li>Lista de precios para compartir</li></ul></article>
-    <article class="plan"><h3>SurCaja Contable</h3><p class="muted" style="font-size:14.5px">Te olvidas de los impuestos: la contabilidad la lleva nuestro equipo.</p>
-      <div><div class="price">3 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $124.196 + IVA</div></div><ul><li class="base">Todo SurCaja Agenda, más:</li><li>Contabilidad y declaración mensual de impuestos, hasta 300 documentos al mes</li><li>Boletas de honorarios de tu equipo independiente, revisadas</li><li>Remuneraciones de 1 trabajador con contrato</li><li>Renta anual y balance incluidos</li></ul></article>
-    <article class="plan rec"><span class="tag">Recomendado</span><h3>SurCaja Contable Plus</h3><p class="muted" style="font-size:14.5px">Para el negocio con equipo contratado que quiere todo resuelto.</p>
-      <div><div class="price">4 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $165.594 + IVA</div></div><ul><li class="base">Todo SurCaja Contable, más:</li><li>Remuneraciones de hasta 4 trabajadores con contrato</li><li>Hasta 600 documentos al mes</li><li>Reportes financieros cada trimestre</li><li>Seguimiento de resultados con el equipo Surtax</li></ul></article>
-  </div>
-  <p class="note-iva">Si tu negocio declara IVA, el IVA de SurCaja es crédito fiscal en tu declaración mensual. Los montos en pesos usan la UF del 24-11-2026 ($41.398,57) y se ajustan con su valor del día de facturación.</p>
 </div></section>
 
 <section class="pad" id="comparacion"><div class="wrap">
@@ -172,8 +210,25 @@ footer{padding-block:28px;font-size:13px;color:var(--muted)}
       <tr><td>Cobro sin digitar dos veces</td><td class="us">Con tu máquina de Mercado Pago</td><td>Requiere comprar el equipo del proveedor</td></tr>
       <tr><td>Gift cards</td><td class="us">Desde el plan de entrada</td><td>Solo en planes superiores</td></tr>
       <tr><td>Boletas de honorarios de tu equipo independiente</td><td class="us">Revisadas en los planes Contables</td><td>Servicio adicional, desde 1 UF más IVA al mes</td></tr>
-      <tr><td>Precio</td><td class="us">En UF, por local, con 5 usuarios incluidos</td><td>En pesos, según plan y número de profesionales</td></tr>
+      
     </tbody></table></div>
+</div></section>
+
+<section class="pad" id="planes"><div class="wrap">
+  <span class="eb">Planes mensuales</span>
+  <h2 style="margin-top:8px">Elige tu plan</h2>
+  <p class="muted" style="margin-top:8px">Valores en UF más IVA, pagados en pesos al valor de la UF del día de facturación. Hasta 5 usuarios incluidos en todos los planes. Referencia en pesos con la UF del 24-11-2026 ($41.398,57).</p>
+  <div class="plans">
+    <article class="plan"><h3>SurCaja</h3><p class="muted" style="font-size:14.5px">La caja de tu negocio, cuadrada cada día.</p>
+      <div><div class="price">0,75 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $31.049 + IVA</div></div><ul><li>Registro de ventas desde el celular de cada persona del equipo</li><li>Cobro integrado con tu máquina de Mercado Pago</li><li>Varios vendedores o servicios en una sola pasada de tarjeta</li><li>Cierre de caja diario</li><li>Liquidación de comisiones y propinas</li><li>Gift cards</li><li>Gastos con la foto del respaldo</li><li>Reportes y estadísticas en Excel</li></ul></article>
+    <article class="plan"><h3>SurCaja Agenda</h3><p class="muted" style="font-size:14.5px">Para negocios que atienden con hora.</p>
+      <div><div class="price">1,2 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $49.678 + IVA</div></div><ul><li class="base">Todo SurCaja, más:</li><li>Agenda por persona del equipo</li><li>Página de reservas con tu marca, para Instagram y Google</li><li>Las reservas web se agendan solas</li><li>Ficha de clientes con historial e inasistencias</li><li>Confirmación y recordatorio por WhatsApp con un toque</li><li>Aviso por correo a quien atiende cuando le agendan, cambian o cancelan una hora</li><li>Lista de precios para compartir</li></ul></article>
+    <article class="plan"><h3>SurCaja Contable</h3><p class="muted" style="font-size:14.5px">Te olvidas de los impuestos: la contabilidad la lleva nuestro equipo.</p>
+      <div><div class="price">3 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $124.196 + IVA</div></div><ul><li class="base">Todo SurCaja Agenda, más:</li><li>Contabilidad y declaración mensual de impuestos, hasta 300 documentos al mes</li><li>Boletas de honorarios de tu equipo independiente, revisadas</li><li>Remuneraciones de 1 trabajador con contrato</li><li>Renta anual y balance incluidos con 12 meses de contrato</li></ul></article>
+    <article class="plan rec"><span class="tag">Recomendado</span><h3>SurCaja Contable Plus</h3><p class="muted" style="font-size:14.5px">Para el negocio con equipo contratado que quiere todo resuelto.</p>
+      <div><div class="price">4 UF <small>+ IVA al mes</small></div><div class="clp">Hoy $165.594 + IVA</div></div><ul><li class="base">Todo SurCaja Contable, más:</li><li>Remuneraciones de hasta 4 trabajadores con contrato</li><li>Hasta 600 documentos al mes</li><li>Reportes financieros cada trimestre</li><li>Seguimiento de resultados con el equipo Surtax</li></ul></article>
+  </div>
+  <p class="note-iva">Si tu negocio paga IVA, puedes descontar el IVA de SurCaja en tu declaración mensual.</p>
 </div></section>
 
 <section class="pad" id="lanzamiento"><div class="wrap">
@@ -189,10 +244,10 @@ footer{padding-block:28px;font-size:13px;color:var(--muted)}
   <span class="eb">Cómo contratar</span>
   <h2 style="margin-top:8px">Así partimos</h2>
   <div class="steps">
-    <div><b>1. Elige tu plan</b>Escríbenos por WhatsApp con el plan que te sirve.</div>
+    <div><b>1. Elige tu plan</b>Escríbenos por WhatsApp al +56 9 9078 7753 con el plan que te sirve.</div>
     <div><b>2. Piloto de un mes</b>Instalamos, cargamos tus datos y capacitamos.</div>
     <div><b>3. Decides</b>Si sigues, recibes la factura mensual por adelantado.</div>
-    <div><b>4. Acompañamiento</b>Revisión mensual de resultados con nuestro equipo.</div>
+    <div><b>4. Acompañamiento</b>Soporte directo con el equipo que configuró tu SurCaja.</div>
   </div>
 </div></section>
 
@@ -200,19 +255,26 @@ footer{padding-block:28px;font-size:13px;color:var(--muted)}
   <span class="eb">Antes de firmar</span>
   <h2 style="margin-top:8px">Condiciones</h2>
   <dl>
-    <dt>Precio</dt><dd>En UF más IVA, facturado en pesos al valor de la UF del día de emisión. Pago mensual por adelantado.</dd>
+    <dt>Precio</dt><dd>En UF más IVA, facturado en pesos al valor de la UF del día de facturación. Pago mensual por adelantado.</dd>
     <dt>Planes Contables</dt><dd>Consideran que el negocio registra todas sus ventas y gastos en SurCaja y tributa en el régimen Pro Pyme. Si no es así, el valor se cotiza según el trabajo adicional.</dd>
-    <dt>Renta anual y balance</dt><dd>Incluidos con 12 meses de contrato. Si el plan termina antes, se cobran aparte según la tarifa vigente.</dd>
-    <dt>Migración desde otro sistema</dt><dd>1,25 UF más IVA por única vez (hoy $51.748 más IVA). Traspasamos clientes, productos, servicios, precios e historial y revisamos que cuadren.</dd>
+    <dt>Migración de datos</dt><dd>1,25 UF más IVA por única vez (hoy $51.748 más IVA). Traspasamos clientes, productos, servicios, precios e historial y revisamos que cuadren.</dd>
     <dt>Usuario adicional</dt><dd>0,075 UF más IVA al mes cada uno (hoy $3.105 más IVA), sobre los 5 incluidos.</dd>
     <dt>Trabajador con contrato adicional</dt><dd>0,2 UF más IVA al mes cada uno (hoy $8.280 más IVA), en los planes Contables.</dd>
     <dt>Documentos sobre el tope</dt><dd>0,35 UF más IVA al mes (hoy $14.489 más IVA) por cada 100 documentos adicionales: boletas, facturas, notas de crédito, comprobantes de pago electrónico y boletas de honorarios.</dd>
     <dt>No incluido</dt><dd>Regularizaciones de períodos anteriores y rectificaciones, que se cotizan después de revisar los antecedentes, y trámites presenciales ante el Servicio de Impuestos Internos.</dd>
-    <dt>Sin permanencia</dt><dd>Se termina con 30 días de aviso y entregamos los datos del negocio en Excel.</dd>
+    <dt>Sin permanencia</dt><dd>Se termina con 30 días de aviso y te entregamos los datos de tu negocio en Excel. Si terminas antes de 12 meses, la renta anual y el balance se cobran aparte.</dd>
   </dl>
 </div></section>
 
 
+
+<section class="pad cierre" id="contacto"><div class="wrap">
+  <div class="cierre-in">
+    <div><span class="eb">Conversemos</span><h2 style="margin-top:8px">Te mostramos SurCaja con los datos de tu negocio</h2>
+    <p class="lead2">Agenda una demo de 20 minutos. Si te sirve, partes con un mes sin costo.</p></div>
+    <dl class="contact"><dt>WhatsApp</dt><dd>+56 9 9078 7753</dd><dt>Correo</dt><dd>jorge.sandoval@surtax.cl</dd><dt>Demo</dt><dd><a href="https://soluciones.surtax.cl/demo/" target="_blank" rel="noopener">soluciones.surtax.cl/demo</a></dd></dl>
+  </div>
+</div></section>
 
 <footer class="pad"><div class="wrap foot"><img src="data:image/png;base64,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" alt="Surtax" width="175" height="200"><div><b>Surtax</b> · Control hoy, crecimiento mañana<br>SurCaja es un desarrollo de Surtax, Puerto Varas, Región de Los Lagos</div></div></footer>
 
